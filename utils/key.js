@@ -2,10 +2,10 @@ var request = require("request");
 
 
 var options = { method: 'GET',
-  url: 'https://api.salesforceiq.com/v2/lists/57114e10e4b0a3f93805ebc6',
+  url: 'https://api.salesforceiq.com/v2/lists/57114e10e4b0a3f93805ebc6/listitems?_start=0&_limit=0',
   headers:
    {
-     authorization: 'NTgwN2IyYmFlNGIwOWQzYjc1ZmMwMjU4OkUxaFZCc0ozQ1dPS0hnR3V6Rkx1NGNZTHkyNA==',
+     authorization: 'Basic NTgwN2IyYmFlNGIwOWQzYjc1ZmMwMjU4OkUxaFZCc0ozQ1dPS0hnR3V6Rkx1NGNZTHkyNA==',
      'content-type': 'application/json'},
 
   json: true
@@ -31,7 +31,7 @@ request(options, function (error, response, body) {
       url: '-' + URLcounter + '&_limit=200',
       headers:
        {
-         'authorization': '-',
+         'authorization': 'Basic NTgwN2IyYmFlNGIwOWQzYjc1ZmMwMjU4OkUxaFZCc0ozQ1dPS0hnR3V6Rkx1NGNZTHkyNA==',
          'content-type': 'application/json'
        },
       json: true
