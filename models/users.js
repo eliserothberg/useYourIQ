@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
 
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.Event, {foreignKey: 'user_id'});
+        // User.hasMany(models.Event, {foreignKey: 'user_id'});
       }
     }
   })
