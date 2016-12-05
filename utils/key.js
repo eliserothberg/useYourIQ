@@ -2,12 +2,12 @@ var request = require("request");
 
 
 var options = { method: 'GET',
-  url: '-',
-  headers: 
-   { 
-     authorization: '-',
+  url: 'https://api.salesforceiq.com/v2/lists/57114e10e4b0a3f93805ebc6',
+  headers:
+   {
+     authorization: 'NTgwN2IyYmFlNGIwOWQzYjc1ZmMwMjU4OkUxaFZCc0ozQ1dPS0hnR3V6Rkx1NGNZTHkyNA==',
      'content-type': 'application/json'},
- 
+
   json: true
 };
 
@@ -25,12 +25,12 @@ request(options, function (error, response, body) {
 
   var j = callNumber;
 
-  for (j=0; j<callNumber; j++) {  
+  for (j=0; j<callNumber; j++) {
 
     var options = { method: 'GET',
       url: '-' + URLcounter + '&_limit=200',
-      headers: 
-       { 
+      headers:
+       {
          'authorization': '-',
          'content-type': 'application/json'
        },
