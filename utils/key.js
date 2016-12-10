@@ -50,25 +50,25 @@ return rp(getNum)
 
     return Promise.all(requestPromiseArray)
       .then(function (totalRecords) {
-        console.log("***requestPromiseArray = " + JSON.stringify(totalRecords.length));
-        console.log("\n**from keys.js * results.length = " + totalRecords.length);
-        console.log("\n**from keys.js * URLcounter = " + URLcounter);
+        // console.log("***requestPromiseArray = " + JSON.stringify(totalRecords.length));
+        console.log("**from keys.js * results.length = " + totalRecords.length);
+        console.log("**from keys.js * URLcounter = " + URLcounter + "\n");
         return totalRecords;
       });
     })
-    .catch(function (err) {
-      console.log("error in API call")  
-    })
     .then(function(totalRecords) {
 
-    console.log("\n**hi**from keys.js * totalRecords = " + totalRecords.length); 
+    // console.log("\n**hi**from keys.js * totalRecords = " + totalRecords.length); 
     // debugger;
     return totalRecords.reduce(function(memo, currentRec) {
       // debugger;
       return memo.concat(currentRec.objects);
     },[]);
-  });
+  })
+     .catch(function (err) {
+      console.log("error in API call")  
+    })
 }
-console.log("\n****from keys.js * totalRecords = " + totalRecords);
+// console.log("\n****from keys.js * totalRecords = " + totalRecords);
 
 module.exports = getData;
