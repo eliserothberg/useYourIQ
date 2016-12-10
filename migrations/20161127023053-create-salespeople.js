@@ -8,7 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      salesLead: {
+      salesID: {
+         allowNull: false,
+        type: Sequelize.STRING
+      },
+      salesName: {
          allowNull: false,
         type: Sequelize.STRING
       },
