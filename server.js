@@ -59,7 +59,7 @@ var models = require('./models');
 models.sequelize.sync();
 
 // listen on our port
-app.listen(PORT, function(){
+server.listen(PORT, function(){
   console.log('Listening on port: ' + PORT);
 })
 
