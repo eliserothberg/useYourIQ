@@ -8,19 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      username: {
-        type: Sequelize.STRING
-      },
       email: {
         type: Sequelize.STRING
       },
       password_hash: {
         type: Sequelize.STRING
       },
-      URL_hash: {
-        type: Sequelize.STRING
-      },
-      authorization_hash: {
+      level: {
         type: Sequelize.STRING
       },
       active: {

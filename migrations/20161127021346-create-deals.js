@@ -20,14 +20,20 @@ module.exports = {
       salesperson: {
         type: Sequelize.STRING
       },
-      revenue: {
+      salesName: {
         type: Sequelize.STRING
+      },
+      revenue: {
+        type: Sequelize.INTEGER
       },
       month: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       closeDate: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
+      },
+       createDate: {
+        type: Sequelize.DATE
       },
       dealType: {
         type: Sequelize.STRING
