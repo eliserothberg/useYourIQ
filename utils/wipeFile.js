@@ -17,6 +17,6 @@ function clearFile() {
       }
     });
   });
-  }
+}
 
 module.exports = clearFile;
