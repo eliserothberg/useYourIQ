@@ -9,66 +9,54 @@ var size;
 var callNumber;
 var URLcounter = 0;
 var totalRecords;
-
+//get the total number of records by querying for one record
 var getNum = {
   method: 'GET',
   uri: 'https://api.salesforceiq.com/v2/lists/57114e10e4b0a3f93805ebc6/listitems?_start=0&_limit=1',
-    headers: 
-    { 
-      'Authorization': auth,
-      'Content-type': 'application/json'
-    },
-    json: true
+  headers: {
+    'Authorization': auth,
+    'Content-type': 'application/json'
+  },
+  json: true
 };
-function getData () { 
-
-return rp(getNum)
-  .then(function (ret) {
-  console.log("**from keys.js * totalSize = " + ret.totalSize);
-  // console.log("\n***1st ret = " + JSON.stringify(ret));
-
-  size = ret.totalSize;
-  callNumber = Math.ceil(size/200);
-  var requestPromiseArray = [];
-    for (j=0; j<callNumber; j++) {  
-    //create the requestPromiseArray using a loop
-      options = { 
-        method: 'GET',
-        uri: 'https://api.salesforceiq.com/v2/lists/57114e10e4b0a3f93805ebc6/listitems?_start=' + URLcounter + '&_limit=200',
-        headers: 
-        { 
-          'Authorization': auth,
-          'Content-type': 'application/json'
-        },
-        json: true
+//use promises in this function to do multiple API calls in a loop
+function getData() {
+  //use the number of records info from the first API call
+  return rp(getNum)
+    .then(function(ret) {
+      // console.log("**from keys.js * totalSize = " + ret.totalSize);
+      //determine the number of API calls needed
+      size = ret.totalSize;
+      callNumber = Math.ceil(size / 200);
+      var requestPromiseArray = [];
+      for (j = 0; j < callNumber; j++) {
+        //create the requestPromiseArray using a loop
+        options = {
+          method: 'GET',
+          uri: 'https://api.salesforceiq.com/v2/lists/57114e10e4b0a3f93805ebc6/listitems?_start=' + URLcounter + '&_limit=200',
+          headers: {
+            'Authorization': auth,
+            'Content-type': 'application/json'
+          },
+          json: true
+        }
+        if (!options.uri) {}
+        //push each call result into the array
+        requestPromiseArray.push(rp(options));
+        URLcounter = URLcounter + 200;
       }
-      if (!options.uri) {
-      }
-      requestPromiseArray.push(rp(options));
-      URLcounter = URLcounter +200;
-    }
-
-    return Promise.all(requestPromiseArray)
-      .then(function (totalRecords) {
-        // console.log("***requestPromiseArray = " + JSON.stringify(totalRecords.length));
-        console.log("**from keys.js * results.length = " + totalRecords.length);
-        console.log("**from keys.js * URLcounter = " + URLcounter + "\n");
-        return totalRecords;
-      });
+      //return all the API calls
+      return Promise.all(requestPromiseArray);        
     })
     .then(function(totalRecords) {
-
-    // console.log("\n**hi**from keys.js * totalRecords = " + totalRecords.length); 
-    // debugger;
-    return totalRecords.reduce(function(memo, currentRec) {
-      // debugger;
-      return memo.concat(currentRec.objects);
-    },[]);
-  })
-     .catch(function (err) {
-      console.log("error in API call")  
+      //join the API calls into one array
+      return totalRecords.reduce(function(initial, following) {
+        return initial.concat(following.objects);
+      }, []);
     })
+    .catch(function(err) {
+      console.log("error in API call")
+    });
 }
-// console.log("\n****from keys.js * totalRecords = " + totalRecords);
 
 module.exports = getData;

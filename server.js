@@ -1,96 +1,66 @@
-/*
-Here is where you set up your server file.
-express middleware.
-*/
-
-// var express = require('express');
-// var bodyParser = require('body-parser');
-// var methodOverride = require('method-override');
-
-// var app = express();
-
-// // Serve static content for the app from the "public" directory in the application directory.
-// app.use(express.static(process.cwd() + '/public'));
-
-// app.use(bodyParser.urlencoded({
-// 	extended: false
-// }));
-// // override with POST having ?_method=DELETE
-// app.use(methodOverride('_method'));
-// var exphbs = require('express-handlebars');
-// app.engine('handlebars', exphbs({
-// 	defaultLayout: 'main'
-// }));
-// app.set('view engine', 'handlebars');
-
-// var routes = require('./controllers/sales_controller.js');
-// app.use('/', routes);
-
-// var port = 3000;
-// app.listen(port);
-
-
-
-//if we use jwt- can leverage this.
-
-// dependencies
-// ============
-var express = require('express');
-var bodyParser = require('body-parser');
 var path = require('path');
-var passport = require('passport');
+var express = require('express');
+var flash = require('connect-flash');
 var logger = require('morgan');
-var jwt = require('jsonwebtoken');
-var cors = require('cors');
-
-// Express
-// =======
-
-// instantiate our express
+var cookieParser = require('cookie-parser'); // for working with cookies
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var methodOverride = require('method-override'); // for deletes in express
+var sessionStore = new session.MemoryStore;
 var app = express();
-app.use(logger('dev'));
-app.use(cors());
 
-// set up bodyparser
-app.use(bodyParser.json());
-app.use(bodyParser.json({type:'application/vnd.api+json'}));
-app.use(bodyParser.text());
-app.use(bodyParser.urlencoded({extended: true}));
+// Serve static content for the app from the "public" directory in the application directory.
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
-// set up the public directory as our static folder
-var staticContentFolder = './public';
-app.use(express.static(staticContentFolder));
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
+app.use(session({ secret: 'yup', cookie: { maxAge: 60000 }, resave: true, saveUninitialized: true}));
+app.use(flash());
 
-// set json webtokensecret
-var jwt_secret = process.env.JWT_SECRET || "CodingsCool";
-app.set('jwtSecret', jwt_secret);
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'));
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({
+  defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
 
+//this allows the dynamically genereated excel file to be downloaded
+app.get('/excel', function (req, res) {
+  res.sendFile(path.join(__dirname, 'excel.csv'));  
+});
 
-// Sequelize
-// =========
+var application_controller = require('./controllers/application_controller');
+var launch_controller = require('./controllers/launch_controller');
+var user_controller = require('./controllers/user_controller');
+var graph_controller = require('./controllers/graph_controller');
+app.use('/', application_controller);
+app.use('/launch',launch_controller);
+app.use('/users', user_controller);
+app.use('/graph', graph_controller);
 
-// bring in our sequelize models 
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('This is a rather unhelpful error message');
+  err.status = 404;
+	console.log(res);
+  next(err);
+});
+// define our port (either our environment's preset, or 3000)
+var PORT = process.env.PORT || 3000;
+
+// bring in our sequelize models
 var models = require('./models');
 
 // and sync them with our db
 models.sequelize.sync();
 
-// API routing
-// ===========
-
-// Note: react and react-router will handle html routing
-require('./routes/api.js')(app);
-// auth route to be added once we get to login
-
-
-// Listen
-// ======
-
-// define our port (either our environment's preset, or 3000)
-var PORT = process.env.PORT || 3000;
-
-
 // listen on our port
 app.listen(PORT, function(){
-  console.log('Esal is listening. Port: ' + PORT);
+  console.log('Listening on port: ' + PORT);
 })
+
+module.exports = app;
