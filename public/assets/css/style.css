@@ -568,10 +568,10 @@ th.visible-print,td.visible-print {
 display:table-cell!important;
 }
 
-/*@font-face {
+@font-face {
 font-family:geo;
 src:url(../fonts/geo.ttf);
-}*/
+}
 
 html {
 -webkit-text-size-adjust:100%;
@@ -1026,7 +1026,7 @@ padding-top:2px;
 border-radius:0!important;
 padding-bottom:10px;
 color:#c5c7cd;
-font-family:helvetica;
+font-family:geo;
 background-color:#000!important;
 text-align:center;
 font-weight:lighter;
@@ -1037,7 +1037,7 @@ letter-spacing:7px;
 padding-top:10px;
 padding-bottom:10px;
 color:#c5c7cd;
-font-family:helvetica;
+font-family:geo;
 background-color:#000!important;
 text-align:center;
 font-weight:lighter;
